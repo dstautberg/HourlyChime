@@ -4,9 +4,9 @@ A Python automation tool that announces the time and current weather conditions 
 
 ## ✨ Features
 
-* **Hourly Automation:** Uses `APScheduler` to trigger  at the top of every hour.
+* **Hourly Automation:** Uses `APScheduler` to trigger at the top of every hour.
 * **Live Weather:** Fetches real-time temperature and conditions for Columbus, OH, using `python-weather`.
-* **Offline TTS:** Uses `pyttsx3` for instant text-to-speech without needing a cloud subscription.
+* **Offline TTS:** Uses `pyttsx3` for instant text-to-speech.
 * **Auditory Alert:** Plays a standard Windows system notification before speaking.
 
 ---
@@ -15,7 +15,7 @@ A Python automation tool that announces the time and current weather conditions 
 
 ### 1. Prerequisites
 
-Ensure you have **Python 3.8+** installed. This script is optimized for Windows systems (e.g., your Predator Helios 300).
+Ensure you have **Python 3.8+** installed. This script is optimized for Windows systems.
 
 ### 2. Install Libraries
 
