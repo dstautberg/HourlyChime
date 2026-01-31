@@ -3,6 +3,7 @@ import python_weather
 import asyncio
 import winsound
 from datetime import datetime
+from apscheduler.schedulers.blocking import BlockingScheduler
 
 async def chime():
     # Get the current time
@@ -27,5 +28,15 @@ async def chime():
     engine.say(message)
     engine.runAndWait()
 
-if __name__ == '__main__':
+def job():
     asyncio.run(chime())
+
+if __name__ == '__main__':
+    # Run once when starting
+    job()
+
+    scheduler = BlockingScheduler()
+    scheduler.add_job(job, 'cron', minute=0)
+
+    print("Scheduler started. Press Ctrl+C to exit.")
+    scheduler.start()
