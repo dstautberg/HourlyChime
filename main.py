@@ -35,14 +35,13 @@ async def chime():
     # Initialize engine early to wake up the driver
     engine = pyttsx3.init()
     voices = engine.getProperty('voices')
-    # Using the second voice (index 1) which is usually clearer on laptop speakers
     engine.setProperty('voice', voices[1].id if len(voices) > 1 else voices[0].id)
     engine.setProperty('rate', 150)
     
     current_time = datetime.now().strftime("%I:%M %p")
     message = f"The current time is {current_time}."
 
-    # Fetch Weather from Open-Meteo (Using Columbus, OH coordinates)
+    # Fetch Weather from Open-Meteo (Columbus, OH)
     try:
         url = "https://api.open-meteo.com/v1/forecast"
         params = {
@@ -62,7 +61,7 @@ async def chime():
         print(f"Weather error: {e}")
         message += " Weather data is currently unavailable."
 
-    # Wake up the audio driver
+    # 1.5s delay to wake up the Realtek audio driver
     time.sleep(1.5) 
     
     # Play the alert sound
@@ -70,7 +69,7 @@ async def chime():
     
     print(f"[{datetime.now().strftime('%H:%M:%S')}] {message}")
     
-    # The comma provides a small 'breath' for the speaker before starting
+    # Leading comma provides a small 'breath' for the speaker
     engine.say(f" , {message}")
     engine.runAndWait()
     engine.stop()
@@ -91,7 +90,6 @@ if __name__ == '__main__':
 
     try:
         while True:
-            # Short sleep keeps the CPU usage low and Ctrl+C responsive
             time.sleep(1)
     except (KeyboardInterrupt, SystemExit):
         print("\nStopping HourlyChime... Goodbye!")

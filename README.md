@@ -1,32 +1,44 @@
-# 🕒 Hourly Chime & Weather Announcer
+# HourlyChime with Weather
 
-A Python automation tool that announces the time and current weather conditions every hour on the hour. It features a system notification chime followed by a natural voice announcement.
+This Python project runs a background service on Windows that announces the current time and weather conditions at the top of every hour. It features a "wake-up" delay to prevent audio clipping on Realtek drivers and uses Open-Meteo for reliable, coordinate-based weather data.
 
-## ✨ Features
+## Features
 
-* **Hourly Automation:** Uses `APScheduler` to trigger at the top of every hour.
-* **Live Weather:** Fetches real-time temperature and conditions for Columbus, OH, using `python-weather`.
-* **Offline TTS:** Uses `pyttsx3` for instant text-to-speech.
-* **Auditory Alert:** Plays a standard Windows system notification before speaking.
+* Hourly Announcements: Automatically chimes and speaks at the start of every hour.
+* Weather Integration: Fetches real-time temperature and conditions for Columbus, OH via the Open-Meteo API.
+* Audio Stability: Includes a 1.5-second pre-chime delay to ensure laptop speakers (like the Predator Helios 300) are fully initialized.
+* Descriptive Weather: Maps WMO codes to natural language, including explanations for phenomena like rime fog.
+* Graceful Exit: Properly handles Ctrl+C to shut down the background scheduler immediately.
 
----
+## Installation
 
-## 🛠️ Usage
+1. Install dependencies:
 
-### 1. Prerequisites
+   ```pip install pyttsx3 requests apscheduler```
 
-Ensure you have **Python 3.8+** installed. This script is optimized for Windows systems.
+## How to Run
 
-### 2. Install Libraries
+### 1. Standard Execution (Terminal)
 
-Install the dependencies using `pip`:
+To run the script and keep the terminal window open (best for testing):
 
-```bash
-pip install pyttsx3 python-weather apscheduler
-```
+    ```python main.py```
+    
+*To exit, simply press Ctrl+C in the terminal.*
 
-### 3. Run the script
+### 2. Run in the Background (No Window)
 
-```bash
-python main.py
-```
+If you want the chime to run without a visible command prompt window:
+
+1. Rename your file from main.py to main.pyw.
+2. Double-click main.pyw. Windows will use pythonw.exe to run it silently.
+
+*To stop it in this mode, you must find "Python" in the Task Manager and end the task.*
+
+### 3. Run Automatically at Startup
+
+To have the chime start every time you log into your laptop:
+
+1. Press Win + R, type shell:startup, and hit Enter.
+2. Right-click your main.py (or main.pyw) file and select Create Shortcut.
+3. Move that shortcut into the Startup folder you just opened.
