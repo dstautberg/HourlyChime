@@ -12,9 +12,9 @@ This Python project runs a background service on Windows that announces the curr
 
 ## Installation
 
-1. Install dependencies:
+Install dependencies:
 
-    ```pip install pyttsx3 requests apscheduler```
+    pip install pyttsx3 requests apscheduler
 
 ## How to Run
 
