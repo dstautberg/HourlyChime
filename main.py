@@ -24,9 +24,8 @@ async def chime():
     except:
         pass # Fallback to time only if weather fails
 
-    # Wake up the Predator audio driver
     time.sleep(1.5)
-    winsound.PlaySound("SystemNotification", winsound.SND_ALIAS)
+    winsound.PlaySound("SystemExclamation", winsound.SND_ALIAS)
     
     print(f"[{datetime.now().strftime('%H:%M:%S')}] {message}")
     engine.say(f" , {message}")
