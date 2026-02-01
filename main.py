@@ -2,41 +2,57 @@ import pyttsx3
 import python_weather
 import asyncio
 import winsound
+import time
+import sys
 from datetime import datetime
-from apscheduler.schedulers.blocking import BlockingScheduler
+from apscheduler.schedulers.background import BackgroundScheduler
 
 async def chime():
-    # Get the current time
-    current_time = datetime.now().strftime("%I:%M %p")
-    message = f"The current time is {current_time}."
-
-    # Get the weather for Columbus
-    async with python_weather.Client(unit=python_weather.IMPERIAL) as client:
-        weather = await client.get('Columbus, OH')
-        temp = weather.temperature
-        desc = weather.description
-        message += f" It is {temp} degrees and {desc}."
-
+    # Initialize engine early to wake up the driver
     engine = pyttsx3.init()
     voices = engine.getProperty('voices')
     engine.setProperty('voice', voices[1].id)
-    engine.setProperty('rate', 150) 
-
-    winsound.PlaySound("SystemNotification", winsound.SND_ALIAS)
-    print(message)
+    engine.setProperty('rate', 150)
     
-    engine.say(message)
+    current_time = datetime.now().strftime("%I:%M %p")
+    message = f"The current time is {current_time}."
+
+    try:
+        async with python_weather.Client(unit=python_weather.IMPERIAL) as client:
+            weather = await client.get('Columbus, OH')
+            message += f" It is {weather.temperature} degrees and {weather.description}."
+    except:
+        pass # Fallback to time only if weather fails
+
+    # Wake up the Predator audio driver
+    time.sleep(1.5)
+    winsound.PlaySound("SystemNotification", winsound.SND_ALIAS)
+    
+    print(f"[{datetime.now().strftime('%H:%M:%S')}] {message}")
+    engine.say(f" , {message}")
     engine.runAndWait()
+    engine.stop()
 
 def job():
     asyncio.run(chime())
 
 if __name__ == '__main__':
-    # Run once when starting
+    # Run once at startup
     job()
-
-    scheduler = BlockingScheduler()
+    
+    # Switch to BackgroundScheduler so the main thread stays open
+    scheduler = BackgroundScheduler()
     scheduler.add_job(job, 'cron', minute=0)
-
-    print("Scheduler started. Press Ctrl+C to exit.")
     scheduler.start()
+
+    print("BackgroundScheduler started. Press Ctrl+C to exit.")
+
+    # Main thread loop - this is what captures Ctrl+C reliably
+    try:
+        while True:
+            time.sleep(1) # Sleep in small increments
+    except (KeyboardInterrupt, SystemExit):
+        print("Stopping scheduler...")
+        scheduler.shutdown()
+        sys.exit(0)
+        
