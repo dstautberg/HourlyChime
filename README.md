@@ -14,7 +14,7 @@ This Python project runs a background service on Windows that announces the curr
 
 1. Install dependencies:
 
-   ```pip install pyttsx3 requests apscheduler```
+    ```pip install pyttsx3 requests apscheduler```
 
 ## How to Run
 
@@ -22,8 +22,8 @@ This Python project runs a background service on Windows that announces the curr
 
 To run the script and keep the terminal window open (best for testing):
 
-    ```python main.py```
-    
+    python main.py
+
 *To exit, simply press Ctrl+C in the terminal.*
 
 ### 2. Run in the Background (No Window)
